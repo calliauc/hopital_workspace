@@ -3,14 +3,15 @@ package test;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 import dao.DAOCompte;
 import dao.DAOPatient;
 import dao.DAOVisite;
-
 import model.Compte;
 import model.Medecin;
 import model.Patient;
@@ -26,10 +27,11 @@ public class app {
 	static DAOPatient daoP = new DAOPatient();
 	static DAOVisite daoA = new DAOVisite();
 	
-	static int salleMedecin = 0;
+	static Integer salleMedecin = null;
 
 	static boolean secretaireEnPause;
-	static List<Patient> fileAttente = new ArrayList<Patient>();
+	static LinkedList<Patient> fileAttente = new LinkedList<Patient>();
+	static List<Visite> visites = new ArrayList<Visite>();
 
 	public static void main(String[] args) {
 		//System.out.println("pause");
@@ -66,9 +68,9 @@ public class app {
 	public static void connexionHopital() {
 
 		// Choix patient/medecin/secretaire
-		System.out.println(" v Connexion au systeme hospitalier v");
-		String login = saisieString("Saisir votre login");
-		String password = saisieString("Saisir votre password");
+		System.out.println("\n\n| Connexion au systeme hospitalier |\n");
+		String login = saisieString("\nSaisir votre login :");
+		String password = saisieString("\nSaisir votre password :");
 		connected = daoC.seConnecter(login, password);
 
 		if(connected instanceof Medecin) {
@@ -216,10 +218,10 @@ public class app {
 
 	public static void menuMedecin() {
 
-		System.out.println("Menu medecin");
+		System.out.println("Menu medecin [" + connected.getLogin() + " en salle "+salleMedecin+"]");
 		System.out.println("1 - Faire entrer le patient suivant");
 		System.out.println("2 - Afficher le patient suivant");
-		System.out.println("3 - AZfficher la file d'attente");
+		System.out.println("3 - Afficher la file d'attente");
 		System.out.println("4 - Sauvegarder vos dernières visites");
 		System.out.println("5 - Se deconnecter");
 
@@ -246,18 +248,35 @@ public class app {
 			break;
 
 		}
+		menuMedecin();
 	}
 
 	private static void patientSuivant() {
-
+		visites.add(new Visite(null, fileAttente.pollFirst(), (Medecin)connected, 20, salleMedecin, LocalDate.now()));
 	}
 
 	private static void afficherProchainPatient() {
+		if (!fileAttente.isEmpty()) {
+			System.out.print("\nPatient suivant : ");
+			System.out.println(fileAttente.getFirst());
 
+		} else {
+			System.out.println("| Aucun patient n'est prévu| ");
+		}
+		System.out.println("\n");
 	}
 
 	private static void afficherFileAttente() {
+		if (!fileAttente.isEmpty()) {
+			System.out.println("\n| Liste des patients pour les consultations à venir |\n");
+			for (Patient patient : fileAttente) {
+				System.out.println("\t" + patient);
+			}
 
+		} else {
+			System.out.println("| Aucun patient n'est prévu |");
+		}
+		System.out.println("\n");
 	}
 
 
