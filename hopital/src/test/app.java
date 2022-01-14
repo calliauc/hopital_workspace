@@ -1,6 +1,6 @@
 package test;
 
-import java.awt.Desktop;
+
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,7 +30,7 @@ public class app {
 	static Compte connected = null;
 	static DAOCompte daoC = new DAOCompte();
 	static DAOPatient daoP = new DAOPatient();
-	static DAOVisite daoA = new DAOVisite();
+	static DAOVisite daoV = new DAOVisite();
 	
 	static Integer salleMedecin = null;
 
@@ -41,7 +41,7 @@ public class app {
 
 	public static void main(String[] args) {
 
-		//connexionHopital();
+		connexionHopital();
 	
 
 	}
@@ -192,19 +192,13 @@ public class app {
 
 		    
 		    oos.close();
+		    
+		}
 		   
 		      
-=======
-		try {
-		      final FileOutputStream fichier = new FileOutputStream("liste des patients.txt");
-		      oos = new ObjectOutputStream(fichier);
-		      /// oos.writeUTF("La secretaire est partie en pause à :");
-		      
-		      oos.writeObject(listePatients);
-		      oos.flush();
->>>>>>> main
-		} 
-		catch (final java.io.IOException e) {
+
+		catch (java.io.IOException e) 
+		{
 		      e.printStackTrace();
 		} 
 		finally {
@@ -219,20 +213,11 @@ public class app {
 			}
 		}
 		
-<<<<<<< HEAD
-		
-		
-		
-		//rentrerDePause() ;
-		
-		
-		
-=======
-		rentrerDePause() ;
->>>>>>> main
+
 	}
+
 	
-	public static void rentrerDePause () 
+	public static void rentrerDePause() 
 	{
 		int n = 0 ;
 		secretaireEnPause = false ; 
@@ -240,13 +225,13 @@ public class app {
 		
 		
 		ObjectInputStream ois = null;
-		;
+		
 		try {
 		      final FileInputStream fichier = new FileInputStream(f);
 		      ois = new ObjectInputStream(fichier);
 		      while (n <= nb_patients_file)
 		      {
-		    	  final Patient p = (Patient) ois.readObject();
+		    	  Patient p = (Patient) ois.readObject();
 		    	  System.out.println(p.toString());
 		    	  fileAttente.add(p);
 		    	  n++ ; 
@@ -308,6 +293,11 @@ public class app {
 
 	public static void menuMedecin() {
 
+		if (visites.size()>=10) {
+			System.out.println("Début de la sauvegarde automatique des visites");
+			sauvegarderListeVisites();
+		}
+		
 		System.out.println("Menu medecin [" + connected.getLogin() + " en salle "+salleMedecin+"]");
 		System.out.println("1 - Faire entrer le patient suivant");
 		System.out.println("2 - Afficher le patient suivant");
@@ -315,6 +305,7 @@ public class app {
 		System.out.println("4 - Afficher vos dernières visites non enregistrées ("+visites.size()+")");
 		System.out.println("5 - Sauvegarder vos dernières visites("+visites.size()+")");
 		System.out.println("6 - Se deconnecter");
+		
 
 		switch(saisieInt("Choix ?")) {
 		case 1:
@@ -397,7 +388,17 @@ public class app {
 
 
 	private static void sauvegarderListeVisites() {
-
+		if (!visites.isEmpty()) {
+			System.out.println("\n| Enregistrement des visites |\n");
+			for (Visite visite : visites) {
+				daoV.insert(visite);
+			}
+			visites.removeAll(visites);
+			System.out.println("\n| Visites enregistrées |\n");
+		} else {
+			System.out.println("| Aucune visite n'est à enregistrer |");
+		}
+		System.out.println("\n");
 	}
 
 
