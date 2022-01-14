@@ -108,8 +108,7 @@ public class app {
 		System.out.println("4 - Afficher l'historique de visites d'un patient");
 		System.out.println("5 - Se deconnecter");
 
-		int choix = saisieInt("Choisir une opération");
-		switch (choix)
+		switch (saisieInt("Choisir une opération"))
 		{
 		case 1 : creerRdv(); break;
 		case 2 : afficherFile(); break;
@@ -272,10 +271,6 @@ public class app {
 		  
 	}
 		
-		
-	
-	
-	
 
 	// FIN SECRETAIRE
 
