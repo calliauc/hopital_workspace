@@ -145,6 +145,9 @@ public class app {
 
 
 	public static void menuMedecin() {
+		
+		System.out.println(" v Menu medecin. Que vouslez-vous faire ? v\n1 - Faire entrer le patient suivant\n2 - Afficher le patient suivant\n3 - Afficher la file d'attente\n4 - Sauvegarder vos visites passées");
+		
 		patientSuivant();
 		afficherProchainPatient();
 		afficherFileAttente();
