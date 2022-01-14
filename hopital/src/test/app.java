@@ -105,7 +105,7 @@ public class app {
 			if (idPatient == p.getId()) {
 				patientConnu=true;
 				fileAttente.add(p);
-				System.out.println("Monsieur "+ p.getNom() +" a ete ajoute a la file d'attente");
+				System.out.println("Mr. / Mme. "+ p.getNom() +" a ete ajoute(e) a la file d'attente");
 			}
 		}
 		if (!patientConnu) {
@@ -114,7 +114,12 @@ public class app {
 	}
 
 	public static void creerComptePatient() {
+		Patient p = new Patient(null, null, null);
+		p.setNom(saisieString("Nom du nouveau patient :"));
+		p.setPrenom(saisieString("Prenom du nouveau patient :"));
 		
+		fileAttente.add(p);
+		System.out.println("Mr. / Mme. "+p.getNom()+" a ete ajoute(e) a la base et a la file d'attente");
 	}
 
 	private static void afficherFile() {
