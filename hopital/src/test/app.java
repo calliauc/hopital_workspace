@@ -31,8 +31,6 @@ public class app {
 	static List<Patient> fileAttente = new ArrayList<Patient>();
 
 	public static void main(String[] args) {
-		//System.out.println("pause");
-		//partirPause() ;
 
 		connexionHopital();
 
@@ -213,11 +211,6 @@ public class app {
 	}
 	
 	
-
-	private static Object LocalDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	// FIN SECRETAIRE
 
