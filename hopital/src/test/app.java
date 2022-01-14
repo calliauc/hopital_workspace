@@ -15,6 +15,7 @@ import model.Compte;
 import model.Medecin;
 import model.Patient;
 import model.Secretaire;
+import model.Visite;
 
 
 public class app {
@@ -32,7 +33,8 @@ public class app {
 
 	public static void main(String[] args) {
 
-		connexionHopital();
+		//connexionHopital();
+		partirPause();
 
 	}
 
@@ -154,7 +156,10 @@ public class app {
 	}
 
 	private static void afficherFile() {
-
+		System.out.println("Il y a " + fileAttente.size() + " patients dans la file d'attente");
+		for (Patient p : fileAttente) {
+			System.out.println("Le patient " + fileAttente.indexOf(p)+1 +" est Mr. / Mme " + p.getNom());
+		}
 	}
 
 	private static void partirPause() {
@@ -214,6 +219,13 @@ public class app {
 
 	// FIN SECRETAIRE
 
+	public static void afficherVisitesPatient() {
+		
+		Integer patientId= saisieInt("Entrer l'id du patient");
+		List<Visite> patientVisites = DAOVisite.VisitefindByPatient(patientId);
+		System.out.println(patientVisites);
+
+	}
 
 	//MEDECIN
 
