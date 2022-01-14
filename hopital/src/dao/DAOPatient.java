@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import model.Patient;
 
-public class DAOPatient implements IDAO<Patient, Integer>{
+public class DAOPatient implements IDAO<Patient, Integer>, Serializable{
 
 	@Override
 	public Patient findById(Integer id) {
@@ -110,7 +111,7 @@ public class DAOPatient implements IDAO<Patient, Integer>{
 		e.printStackTrace();
 		}
 
-	}
+	}            
 
 	@Override
 	public void update(Patient p) {
