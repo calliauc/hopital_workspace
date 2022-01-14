@@ -4,13 +4,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 import dao.DAOCompte;
 import dao.DAOPatient;
 import dao.DAOVisite;
-
 import model.Compte;
 import model.Medecin;
 import model.Patient;
@@ -29,7 +29,7 @@ public class app {
 	static int salleMedecin = 0;
 
 	static boolean secretaireEnPause;
-	static List<Patient> fileAttente = new ArrayList<Patient>();
+	static LinkedList<Patient> fileAttente = new LinkedList<Patient>();
 
 	public static void main(String[] args) {
 		//System.out.println("pause");
