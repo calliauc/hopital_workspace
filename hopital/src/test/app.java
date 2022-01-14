@@ -33,8 +33,20 @@ public class app {
 
 	public static void menuHopital() {
 		// Choix patient/medecin/secretaire
-		connexionSecretaire();
-		connexionMedecin();
+		switch (saisieString("Connexion en tant que medecin ou secretaire ? M/S : ")) {
+		case "M":
+		case "m":
+			connexionMedecin();
+			break;
+		case "S":
+		case "s":
+			connexionSecretaire();
+			break;
+		default:
+			break;
+		}
+		
+		menuHopital();
 
 	}
 
