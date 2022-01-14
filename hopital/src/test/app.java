@@ -115,7 +115,8 @@ public class app {
 		System.out.println("1 - Creer un rendez-vous");
 		System.out.println("2 - Afficher file d'attente");
 		System.out.println("3 - Partir en pause");
-		System.out.println("4 - Se deconnecter");
+		System.out.println("4 - Afficher l'historique de visites d'un patient");
+		System.out.println("5 - Se deconnecter");
 
 		int choix = saisieInt("Choisir une opération");
 		switch (choix)
@@ -123,7 +124,8 @@ public class app {
 		case 1 : creerRdv(); break;
 		case 2 : afficherFile(); break;
 		case 3 : partirPause(); break;
-		case 4 : connected = null; connexionHopital(); break;
+		case 4 : afficherVisitesPatient(); break;
+		case 5 : connected = null; connexionHopital(); break;
 		}
 
 		menuSecretaire();
@@ -133,7 +135,7 @@ public class app {
 		List<Patient> listePatients = new ArrayList<Patient>();
 		listePatients = daoP.findAll();
 
-		int idPatient = saisieInt("ID du patient ?");
+		Integer idPatient = saisieInt("ID du patient ?");
 		boolean patientConnu=false;
 		for (Patient p : listePatients) {
 			if (idPatient == p.getId()) {
