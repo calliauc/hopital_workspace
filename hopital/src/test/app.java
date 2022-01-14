@@ -1,7 +1,12 @@
 package test;
 
+
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,19 +30,19 @@ public class app {
 	static Compte connected = null;
 	static DAOCompte daoC = new DAOCompte();
 	static DAOPatient daoP = new DAOPatient();
-	static DAOVisite daoV = new DAOVisite();
+	static DAOVisite daoA = new DAOVisite();
 	
 	static Integer salleMedecin = null;
 
 	static boolean secretaireEnPause;
 	static LinkedList<Patient> fileAttente = new LinkedList<Patient>();
+	static int nb_patients_file ;
 	static List<Visite> visites = new ArrayList<Visite>();
 
 	public static void main(String[] args) {
-		//System.out.println("pause");
-		//partirPause() ;
 
 		connexionHopital();
+	
 
 	}
 
@@ -119,17 +124,22 @@ public class app {
 	private static void creerRdv() {
 		List<Patient> listePatients = new ArrayList<Patient>();
 		listePatients = daoP.findAll();
-
-		Integer idPatient = saisieInt("ID du patient ?");
-		boolean patientConnu=false;
-		for (Patient p : listePatients) {
-			if (idPatient == p.getId()) {
-				patientConnu=true;
-				fileAttente.add(p);
-				System.out.println("Mr. / Mme. "+ p.getNom() +" a ete ajoute(e) a la file d'attente");
+		
+		
+				String patientExistant = saisieString("Ce patient est-il connu de l'hopital ? (O/N)");
+		switch (patientExistant) {
+		case "o":
+		case "O":
+			Integer idPatient = saisieInt("ID du patient ?");
+			for (Patient p : listePatients) {
+				if (idPatient == p.getId()) {
+					fileAttente.add(p);
+					System.out.println("Mr. / Mme. "+ p.getNom() +" a ete ajoute(e) a la file d'attente");
+					break;
+				}
 			}
-		}
-		if (!patientConnu) {
+		case "n":
+		case "N":
 			creerComptePatient();
 		}
 	}
@@ -146,27 +156,49 @@ public class app {
 	private static void afficherFile() {
 		System.out.println("Il y a " + fileAttente.size() + " patients dans la file d'attente");
 		for (Patient p : fileAttente) {
-			System.out.println("Le patient " + fileAttente.indexOf(p)+1 +" est Mr. / Mme " + p.getNom());
+			System.out.println("Le patient n°" + (fileAttente.indexOf(p)+1) +" est Mr. / Mme " + p.getNom());
 		}
 	}
 
 	private static void partirPause() {
-		secretaireEnPause = true ; 
-		System.out.println("pause");
-		List<Patient> listePatients = new ArrayList<Patient>();
-		listePatients = daoP.findAll();
+		
+		secretaireEnPause = true ;
+		
+		nb_patients_file = fileAttente.size() ; 
 		
 		ObjectOutputStream oos = null;
 		
-		try {
-		      final FileOutputStream fichier = new FileOutputStream("liste des patients.txt");
-		      oos = new ObjectOutputStream(fichier);
-		      /// oos.writeUTF("La secretaire est partie en pause à :");
+
+		
+		try 
+		{
+			File f=new File("liste des patients.txt");
+			final FileOutputStream fichier = new FileOutputStream(f);
+		    oos = new ObjectOutputStream(fichier);
+		    /// oos.writeUTF("La secretaire est partie en pause à :");
 		      
-		      oos.writeObject(listePatients);
-		      oos.flush();
-		} 
-		catch (final java.io.IOException e) {
+		    for (Patient p : fileAttente)
+		    {
+		    	System.out.println(p.toString());
+		    	oos.writeObject(p);
+		    	
+		    	
+		    	  //daoP.delete(p.getId());
+		    }
+		    fileAttente = new LinkedList<Patient>() ;
+		    System.out.println(fileAttente);  
+		      
+		      
+
+		    
+		    oos.close();
+		    
+		}
+		   
+		      
+
+		catch (java.io.IOException e) 
+		{
 		      e.printStackTrace();
 		} 
 		finally {
@@ -181,21 +213,69 @@ public class app {
 			}
 		}
 		
-		rentrerDePause() ;
-	}
-	
-	public static void rentrerDePause () 
-	{
-		secretaireEnPause = false ; 
-		
-	}
-	
-	
 
-	private static Object LocalDate() {
-		// TODO Auto-generated method stub
-		return null;
 	}
+
+	
+	public static void rentrerDePause() 
+	{
+		int n = 0 ;
+		secretaireEnPause = false ; 
+		File f =new File("liste des patients.txt");
+		
+		
+		ObjectInputStream ois = null;
+		
+		try {
+		      final FileInputStream fichier = new FileInputStream(f);
+		      ois = new ObjectInputStream(fichier);
+		      while (n <= nb_patients_file)
+		      {
+		    	  Patient p = (Patient) ois.readObject();
+		    	  System.out.println(p.toString());
+		    	  fileAttente.add(p);
+		    	  n++ ; 
+		      }
+		      
+		      f.delete() ;
+		      
+		    } 
+		catch( EOFException e)
+		{
+			
+			f.delete() ;
+		}
+		catch (final java.io.IOException e) 
+		{
+		      e.printStackTrace();
+		} 
+		catch (final ClassNotFoundException e) 
+		{
+		      e.printStackTrace();
+		}
+		
+		finally 
+		{
+			try 
+			{
+				if (ois != null)
+				{
+		          ois.close();
+		        }
+		     } 
+			catch (final IOException ex) 
+			{
+		        ex.printStackTrace();
+		    }
+		  }
+	
+		  
+	}
+		
+		
+	
+	
+	
 
 	// FIN SECRETAIRE
 
@@ -212,11 +292,6 @@ public class app {
 
 	public static void menuMedecin() {
 
-		if (visites.size()>=10) {
-			System.out.println("Début de la sauvegarde automatique des visites");
-			sauvegarderListeVisites();
-		}
-		
 		System.out.println("Menu medecin [" + connected.getLogin() + " en salle "+salleMedecin+"]");
 		System.out.println("1 - Faire entrer le patient suivant");
 		System.out.println("2 - Afficher le patient suivant");
@@ -224,7 +299,6 @@ public class app {
 		System.out.println("4 - Afficher vos dernières visites non enregistrées ("+visites.size()+")");
 		System.out.println("5 - Sauvegarder vos dernières visites("+visites.size()+")");
 		System.out.println("6 - Se deconnecter");
-		
 
 		switch(saisieInt("Choix ?")) {
 		case 1:
@@ -307,17 +381,7 @@ public class app {
 
 
 	private static void sauvegarderListeVisites() {
-		if (!visites.isEmpty()) {
-			System.out.println("\n| Enregistrement des visites |\n");
-			for (Visite visite : visites) {
-				daoV.insert(visite);
-			}
-			visites.removeAll(visites);
-			System.out.println("\n| Visites enregistrées |\n");
-		} else {
-			System.out.println("| Aucune visite n'est à enregistrer |");
-		}
-		System.out.println("\n");
+
 	}
 
 

@@ -1,6 +1,10 @@
 package model;
 
-public class Patient {
+import java.io.Serializable;
+
+public class Patient implements Serializable{
+	
+	
 	
 	private Integer id ; 
 	private String nom ; 
