@@ -74,7 +74,7 @@ public class app {
 		connected = daoC.seConnecter(login, password);
 
 		if(connected instanceof Medecin) {
-			while (salleMedecin != 1 && salleMedecin != 2)
+			while (salleMedecin != (Integer)1 && salleMedecin != (Integer)2)
 				salleMedecin = saisieInt("Allez vous consulter dans la salle 1 ou 2 ?");
 			menuMedecin();
 		}
@@ -222,8 +222,9 @@ public class app {
 		System.out.println("1 - Faire entrer le patient suivant");
 		System.out.println("2 - Afficher le patient suivant");
 		System.out.println("3 - Afficher la file d'attente");
-		System.out.println("4 - Sauvegarder vos dernières visites");
-		System.out.println("5 - Se deconnecter");
+		System.out.println("4 - Afficher vos dernières visites non enregistrées ("+visites.size()+")");
+		System.out.println("5 - Sauvegarder vos dernières visites("+visites.size()+")");
+		System.out.println("6 - Se deconnecter");
 
 		switch(saisieInt("Choix ?")) {
 		case 1:
@@ -236,9 +237,12 @@ public class app {
 			afficherFileAttente();
 			break;
 		case 4:
-			sauvegarderListeVisites();
+			afficherListeVisites();
 			break;
 		case 5:
+			sauvegarderListeVisites();
+			break;
+		case 6:
 			connected = null;
 			salleMedecin = 0;
 			connexionHopital();
@@ -251,8 +255,17 @@ public class app {
 		menuMedecin();
 	}
 
+
 	private static void patientSuivant() {
-		visites.add(new Visite(null, fileAttente.pollFirst(), (Medecin)connected, 20, salleMedecin, LocalDate.now()));
+		System.out.println("|\tLe patient précédent est sorti\t|");
+		if (!fileAttente.isEmpty()) {
+			afficherProchainPatient();
+			System.out.println("|\tVisite en cours\t|\n\n");
+			visites.add(new Visite(null, fileAttente.pollFirst(), (Medecin)connected, 20, salleMedecin, LocalDate.now()));
+		} else {
+			System.out.println("| Aucun autre patient n'est prévu| ");
+		}
+		System.out.println("\n");
 	}
 
 	private static void afficherProchainPatient() {
@@ -275,6 +288,19 @@ public class app {
 
 		} else {
 			System.out.println("| Aucun patient n'est prévu |");
+		}
+		System.out.println("\n");
+	}
+
+	public static void afficherListeVisites() {
+		if (!visites.isEmpty()) {
+			System.out.println("\n| Liste visites non enregistrées |\n");
+			for (Visite visite : visites) {
+				System.out.println("\t" + visite);
+			}
+
+		} else {
+			System.out.println("| Aucune visite n'est à enregistrer |");
 		}
 		System.out.println("\n");
 	}
