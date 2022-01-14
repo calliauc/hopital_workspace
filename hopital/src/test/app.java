@@ -156,7 +156,10 @@ public class app {
 	}
 
 	private static void afficherFile() {
-
+		System.out.println("Il y a " + fileAttente.size() + " patients dans la file d'attente");
+		for (Patient p : fileAttente) {
+			System.out.println("Le patient " + fileAttente.indexOf(p)+1 +" est Mr. / Mme " + p.getNom());
+		}
 	}
 
 	private static void partirPause() {
