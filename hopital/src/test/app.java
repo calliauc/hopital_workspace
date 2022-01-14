@@ -15,13 +15,15 @@ import model.Secretaire;
 
 
 public class app {
-	
-	
+
+
 	static Compte connected = null;
 	static DAOCompte daoC = new DAOCompte();
 	static DAOPatient daoP = new DAOPatient();
 	static DAOVisite daoA = new DAOVisite();
 	
+	static int salleMedecin = 0;
+
 	static boolean secretaireEnPause;
 	static List<Patient> fileAttente = new ArrayList<Patient>();
 
@@ -52,8 +54,8 @@ public class app {
 		return sc.nextInt();
 	}
 
-	
-	
+
+
 	public static void connectionHopital() {
 		// Choix patient/medecin/secretaire
 		System.out.println(" v Connexion au systeme hospitalier v");
@@ -61,10 +63,15 @@ public class app {
 		String password = saisieString("Saisir votre password");
 		connected = daoC.seConnecter(login, password);
 
-		if(connected instanceof Medecin) {menuMedecin();}
-		else if(connected instanceof Secretaire) {menuSecretaire();}
-		else if(connected ==null) 
-		{
+		if(connected instanceof Medecin) {
+			while (salleMedecin != 1 || salleMedecin != 2)
+				salleMedecin = saisieInt("Allez vous consulter dans la salle 1 ou 2 ?");
+			menuMedecin();
+		}
+		else if(connected instanceof Secretaire) {
+			menuSecretaire();
+		}
+		else if(connected ==null) {
 			System.out.println("Identifiants invalides !");
 		}
 
@@ -79,7 +86,7 @@ public class app {
 		String login = saisieString("Saisir login secretaire : ");
 		String password = saisieString("Saisie mot de passe : ");
 		connected= daoC.seConnecter(login, password);
-		
+
 		if(connected instanceof Secretaire) {
 			menuSecretaire();
 		}else if(connected instanceof Medecin) {
@@ -93,13 +100,13 @@ public class app {
 
 
 	public static void menuSecretaire() {
-		
+
 		System.out.println("Menu secretaire");
 		System.out.println("1 - Creer un rendez-vous");
 		System.out.println("2 - Afficher file d'attente");
 		System.out.println("3 - Partir en pause");
 		System.out.println("4 - Se deconnecter");
-		
+
 		int choix = saisieInt("Choisir une opération");
 		switch (choix)
 		{
@@ -108,18 +115,18 @@ public class app {
 		case 3 : partirPause(); break;
 		case 4 : connected = null; connectionHopital(); break;
 		}
-		
+
 		menuSecretaire();
 	}
 
 	private static void creerRdv() {
 		List<Patient> listePatients = new ArrayList<Patient>();
 		listePatients = daoP.findAll();
-		
+
 		int idPatient = saisieInt("ID du patient ?");
 		for (Patient p : listePatients) {
 			if (idPatient == p.getId()) {
-				
+
 			}
 		}
 		creerComptePatient();
@@ -127,7 +134,7 @@ public class app {
 	}
 
 	public static void creerComptePatient() {
-		
+
 	}
 
 	private static void afficherFile() {
@@ -145,14 +152,14 @@ public class app {
 
 
 	public static void menuMedecin() {
-		
+
 		System.out.println("Menu medecin");
 		System.out.println("1 - Faire entrer le patient suivant");
 		System.out.println("2 - Afficher le patient suivant");
 		System.out.println("3 - AZfficher la file d'attente");
 		System.out.println("4 - Sauvegarder vos dernières visites");
 		System.out.println("5 - Se deconnecter");
-		
+
 		switch(saisieInt("Choix ?")) {
 		case 1:
 			patientSuivant();
@@ -168,6 +175,7 @@ public class app {
 			break;
 		case 5:
 			connected = null;
+			salleMedecin = 0;
 			connectionHopital();
 			break;		
 		default :
