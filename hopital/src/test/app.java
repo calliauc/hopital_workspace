@@ -35,7 +35,7 @@ public class app {
 		//System.out.println("pause");
 		//partirPause() ;
 		// TODO Auto-generated method stub
-
+		System.out.println("yoooo");
 		connexionHopital();
 
 	}
