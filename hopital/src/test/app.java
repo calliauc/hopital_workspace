@@ -137,9 +137,13 @@ public class app {
 					break;
 				}
 			}
+			break;
 		case "n":
 		case "N":
 			creerComptePatient();
+			break;
+		default:
+			break;
 		}
 	}
 
