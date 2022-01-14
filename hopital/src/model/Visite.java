@@ -11,13 +11,22 @@ public class Visite {
 	private LocalDate dateVisite;
 	
 	public Visite(Integer numero, Patient patient, Medecin medecin, int prix, Integer salle, LocalDate dateVisite) {
-		super();
+	
 		this.numero = numero;
 		this.patient = patient;
 		this.medecin = medecin;
 		this.prix = prix;
 		this.salle = salle;
 		this.dateVisite = dateVisite;
+	}
+
+	public Visite(Patient patient, Medecin medecin ,Integer salle) {
+		
+		this.patient = patient;
+		this.medecin = medecin;
+		this.prix = 20;
+		this.salle = salle;
+		this.dateVisite = LocalDate.now();
 	}
 
 	public Integer getNumero() {

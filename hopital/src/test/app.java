@@ -17,7 +17,7 @@ import java.util.Scanner;
 import dao.DAOCompte;
 import dao.DAOPatient;
 import dao.DAOVisite;
-import model.Compte;
+import model.Compte; 
 import model.Medecin;
 import model.Patient;
 import model.Secretaire;
@@ -36,7 +36,7 @@ public class app {
 
 	static boolean secretaireEnPause;
 	static LinkedList<Patient> fileAttente = new LinkedList<Patient>();
-	static int nb_patients_file ;
+	//static int nb_patients_file ;
 	static List<Visite> visites = new ArrayList<Visite>();
 
 	public static void main(String[] args) {
@@ -168,33 +168,17 @@ public class app {
 		
 		secretaireEnPause = true ;
 		
-		nb_patients_file = fileAttente.size() ; 
-		
-		ObjectOutputStream oos = null;
-		
-
-		
 		try 
 		{
 			File f=new File("liste des patients.txt");
 			final FileOutputStream fichier = new FileOutputStream(f);
-		    oos = new ObjectOutputStream(fichier);
+			ObjectOutputStream oos = new ObjectOutputStream(fichier);
 		    /// oos.writeUTF("La secretaire est partie en pause à :");
-		      
-		    for (Patient p : fileAttente)
-		    {
-		    	System.out.println(p.toString());
-		    	oos.writeObject(p);
-		    	
-		    	
-		    	  //daoP.delete(p.getId());
-		    }
-		    fileAttente = new LinkedList<Patient>() ;
-		    System.out.println(fileAttente);  
-		      
-		      
-
-		    
+		 
+		    	oos.writeObject(fileAttente);
+		   
+		    fileAttente.clear();
+		 
 		    oos.close();
 		    
 		}
@@ -205,17 +189,6 @@ public class app {
 		{
 		      e.printStackTrace();
 		} 
-		finally {
-			try {
-				if (oos != null) {
-			          oos.flush();
-			          oos.close();
-			    }
-			}
-			catch (final IOException ex) {
-			        ex.printStackTrace();
-			}
-		}
 		
 
 	}
@@ -223,56 +196,21 @@ public class app {
 	
 	public static void rentrerDePause() 
 	{
-		int n = 0 ;
+		
 		secretaireEnPause = false ; 
 		File f =new File("liste des patients.txt");
 		
-		
-		ObjectInputStream ois = null;
-		
 		try {
 		      final FileInputStream fichier = new FileInputStream(f);
-		      ois = new ObjectInputStream(fichier);
-		      while (n <= nb_patients_file)
-		      {
-		    	  Patient p = (Patient) ois.readObject();
-		    	  System.out.println(p.toString());
-		    	  fileAttente.add(p);
-		    	  n++ ; 
-		      }
-		      
-		      f.delete() ;
-		      
+		      ObjectInputStream ois = new ObjectInputStream(fichier);
+		      fileAttente= (LinkedList<Patient>) ois.readObject();
+		      f.delete();
 		    } 
-		catch( EOFException e)
+		catch( Exception e)
 		{
 			
-			f.delete() ;
-		}
-		catch (final java.io.IOException e) 
-		{
-		      e.printStackTrace();
-		} 
-		catch (final ClassNotFoundException e) 
-		{
-		      e.printStackTrace();
 		}
 		
-		finally 
-		{
-			try 
-			{
-				if (ois != null)
-				{
-		          ois.close();
-		        }
-		     } 
-			catch (final IOException ex) 
-			{
-		        ex.printStackTrace();
-		    }
-		  }
-	
 		  
 	}
 		
@@ -292,10 +230,7 @@ public class app {
 
 	public static void menuMedecin() {
 
-		if (visites.size()>=10) {
-			System.out.println("Debut de la sauvegarde automatique des visites");
-			sauvegarderListeVisites();
-		}
+		
 		
 		System.out.println("Menu medecin [" + connected.getLogin() + " en salle "+salleMedecin+"]");
 		System.out.println("1 - Faire entrer le patient suivant");
@@ -340,7 +275,11 @@ public class app {
 		if (!fileAttente.isEmpty()) {
 			afficherProchainPatient();
 			System.out.println("|\tVisite en cours\t|\n\n");
-			visites.add(new Visite(null, fileAttente.pollFirst(), (Medecin)connected, 20, salleMedecin, LocalDate.now()));
+			visites.add(new Visite(fileAttente.pollFirst(), (Medecin)connected, salleMedecin));
+			if (visites.size()>=10) {
+				System.out.println("Debut de la sauvegarde automatique des visites");
+				sauvegarderListeVisites();
+			}
 		} else {
 			System.out.println("| Aucun autre patient n'est prévu| ");
 		}
