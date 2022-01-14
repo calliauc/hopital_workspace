@@ -29,7 +29,7 @@ public class app {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		connectionHopital();
+		connexionHopital();
 
 	}
 
@@ -56,7 +56,7 @@ public class app {
 
 
 
-	public static void connectionHopital() {
+	public static void connexionHopital() {
 		// Choix patient/medecin/secretaire
 		System.out.println(" v Connexion au systeme hospitalier v");
 		String login = saisieString("Saisir votre login");
@@ -75,7 +75,7 @@ public class app {
 			System.out.println("Identifiants invalides !");
 		}
 
-		connectionHopital();
+		connexionHopital();
 
 	}
 
@@ -113,7 +113,7 @@ public class app {
 		case 1 : creerRdv(); break;
 		case 2 : afficherFile(); break;
 		case 3 : partirPause(); break;
-		case 4 : connected = null; connectionHopital(); break;
+		case 4 : connected = null; connexionHopital(); break;
 		}
 
 		menuSecretaire();
@@ -176,7 +176,7 @@ public class app {
 		case 5:
 			connected = null;
 			salleMedecin = 0;
-			connectionHopital();
+			connexionHopital();
 			break;		
 		default :
 			System.out.println("Cette operation n'existe pas");
