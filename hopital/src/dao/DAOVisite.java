@@ -83,7 +83,7 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/visite?characterEncoding=UTF-8","root","");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hopital?characterEncoding=UTF-8","root","");
 
 			PreparedStatement ps = conn.prepareStatement("SELECT * from fiche WHERE id_patient = ?;");
 			ps.setInt(1,patientId);
