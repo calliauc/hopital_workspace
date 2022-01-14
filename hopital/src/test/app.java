@@ -1,8 +1,29 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import dao.DAOCompte;
+import dao.DAOPatient;
+import dao.DAOVisite;
+
+import model.Compte;
+import model.Medecin;
+import model.Patient;
+import model.Secretaire;
+
+
 public class app {
+	
+	
+	static Compte connected = null;
+	static DAOCompte daoC = new DAOCompte();
+	static DAOPatient daoP = new DAOPatient();
+	static DAOVisite daoA = new DAOVisite();
+	
+	static boolean secretaireEnPause;
+	static List<Patient> fileAttente = new ArrayList<Patient>();
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -54,24 +75,59 @@ public class app {
 
 	// SECRETAIRE
 	public static void connexionSecretaire() {
-		menuSecretaire();
+		System.out.println("Connexion secretaire");
+		String login = saisieString("Saisir login secretaire : ");
+		String password = saisieString("Saisie mot de passe : ");
+		connected= daoC.seConnecter(login, password);
+		
+		if(connected instanceof Secretaire) {
+			menuSecretaire();
+		}else if(connected instanceof Medecin) {
+			System.out.println("Mauvaise page de connexion");
+		} else if(connected ==null) 
+		{
+			System.out.println("Identifiants invalides");
+		}
+		menuHopital();
 	}
 
 
 	public static void menuSecretaire() {
-		creerRdv();
-		afficherFile();
-		partirPause();
-
+		
+		System.out.println("Menu secretaire");
+		System.out.println("1 - Creer un rendez-vous");
+		System.out.println("2 - Afficher file d'attente");
+		System.out.println("3 - Partir en pause");
+		System.out.println("4 - Se deconnecter");
+		
+		int choix = saisieInt("Choisir une opération");
+		switch (choix)
+		{
+		case 1 : creerRdv(); break;
+		case 2 : afficherFile(); break;
+		case 3 : partirPause(); break;
+		case 4 : connected = null; menuHopital(); break;
+		}
+		
+		menuSecretaire();
 	}
 
 	private static void creerRdv() {
+		List<Patient> listePatients = new ArrayList<Patient>();
+		listePatients = daoP.findAll();
+		
+		int idPatient = saisieInt("ID du patient ?");
+		for (Patient p : listePatients) {
+			if (idPatient == p.getId()) {
+				
+			}
+		}
 		creerComptePatient();
 
 	}
 
 	public static void creerComptePatient() {
-
+		
 	}
 
 	private static void afficherFile() {
