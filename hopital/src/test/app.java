@@ -27,7 +27,7 @@ public class app {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		menuHopital();
+		connectionHopital();
 
 	}
 
@@ -52,27 +52,23 @@ public class app {
 		return sc.nextInt();
 	}
 
-	public static void menuHopital() {
+	
+	
+	public static void connectionHopital() {
 		// Choix patient/medecin/secretaire
-		switch (saisieString("Portail du système informatique hospitalier\n. Connexion :\nM - Medecin\nS - Secretaire\nQ - Quitter")) {
-		case "M":
-		case "m":
-			connexionMedecin();
-			break;
-		case "S":
-		case "s":
-			connexionSecretaire();
-			break;
-		case "Q":
-		case "q":
-			System.exit(0);
-			break;
-		default:
-			System.out.println("Saisie incorrecte");
-			break;
+		System.out.println(" v Connexion au systeme hospitalier v");
+		String login = saisieString("Saisir votre login");
+		String password = saisieString("Saisir votre password");
+		connected = daoC.seConnecter(login, password);
+
+		if(connected instanceof Medecin) {menuMedecin();}
+		else if(connected instanceof Vendeur) {menuSecretaire();}
+		else if(connected ==null) 
+		{
+			System.out.println("Identifiants invalides !");
 		}
-		
-		menuHopital();
+
+		connectionHopital();
 
 	}
 
@@ -147,9 +143,6 @@ public class app {
 
 	//MEDECIN
 
-	public static void connexionMedecin() {
-		menuMedecin();
-	}
 
 	public static void menuMedecin() {
 		patientSuivant();
