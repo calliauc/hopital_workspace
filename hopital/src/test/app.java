@@ -171,43 +171,30 @@ public class app {
 		
 		ObjectOutputStream oos = null;
 		
-		try 
-		{
+		try {
 		      final FileOutputStream fichier = new FileOutputStream("liste des patients.txt");
 		      oos = new ObjectOutputStream(fichier);
 		      /// oos.writeUTF("La secretaire est partie en pause à :");
 		      
-		      
 		      oos.writeObject(listePatients);
-		      
-		      
-
 		      oos.flush();
 		} 
-		catch (final java.io.IOException e) 
-		{
+		catch (final java.io.IOException e) {
 		      e.printStackTrace();
 		} 
-		finally 
-		{
-		      
+		finally {
 			try {
-				if (oos != null) 
-				{
+				if (oos != null) {
 			          oos.flush();
 			          oos.close();
 			    }
-			    } 
-			catch (final IOException ex) 
-			{
+			}
+			catch (final IOException ex) {
 			        ex.printStackTrace();
 			}
 		}
 		
 		rentrerDePause() ;
-		
-		
-		
 	}
 	
 	public static void rentrerDePause () 
