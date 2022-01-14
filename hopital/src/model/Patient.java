@@ -14,6 +14,12 @@ public class Patient {
 		this.prenom = prenom;
 	}
 
+	public Patient(String nom, String prenom) {
+		
+		this.nom = nom;
+		this.prenom = prenom;
+	}
+
 
 	public Integer getId() {
 		return id;
