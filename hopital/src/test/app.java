@@ -92,9 +92,6 @@ public class app {
 
 
 	// SECRETAIRE
-<<<<<<< HEAD
-	
-=======
 	public static void connexionSecretaire() {
 		System.out.println("Connexion secretaire");
 		String login = saisieString("Saisir login secretaire : ");
@@ -113,7 +110,6 @@ public class app {
 	}
 
 
->>>>>>> main
 	public static void menuSecretaire() {
 
 		System.out.println("Menu secretaire");
@@ -142,13 +138,9 @@ public class app {
 		boolean patientConnu=false;
 		for (Patient p : listePatients) {
 			if (idPatient == p.getId()) {
-<<<<<<< HEAD
 				patientConnu=true;
 				fileAttente.add(p);
 				System.out.println("Mr. / Mme. "+ p.getNom() +" a ete ajoute(e) a la file d'attente");
-=======
-
->>>>>>> main
 			}
 		}
 		if (!patientConnu) {
@@ -157,16 +149,12 @@ public class app {
 	}
 
 	public static void creerComptePatient() {
-<<<<<<< HEAD
 		Patient p = new Patient(null, null, null);
 		p.setNom(saisieString("Nom du nouveau patient :"));
 		p.setPrenom(saisieString("Prenom du nouveau patient :"));
 		
 		fileAttente.add(p);
 		System.out.println("Mr. / Mme. "+p.getNom()+" a ete ajoute(e) a la base et a la file d'attente");
-=======
-
->>>>>>> main
 	}
 
 	private static void afficherFile() {
