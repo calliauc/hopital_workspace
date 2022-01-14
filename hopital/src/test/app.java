@@ -1,12 +1,29 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-import model.Admin;
-import model.Client;
-import model.Vendeur;
+import dao.DAOCompte;
+import dao.DAOPatient;
+import dao.DAOVisite;
+
+import model.Compte;
+import model.Medecin;
+import model.Patient;
+import model.Secretaire;
+
 
 public class app {
+	
+	
+	static Compte connected = null;
+	static DAOCompte daoC = new DAOCompte();
+	static DAOPatient daoP = new DAOPatient();
+	static DAOVisite daoA = new DAOVisite();
+	
+	static boolean secretaireEnPause;
+	static List<Patient> fileAttente = new ArrayList<Patient>();
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -100,6 +117,15 @@ public class app {
 	}
 
 	private static void creerRdv() {
+		List<Patient> listePatients = new ArrayList<Patient>();
+		listePatients = daoP.findAll();
+		
+		int idPatient = saisieInt("ID du patient ?");
+		for (Patient p : listePatients) {
+			if (idPatient == p.getId()) {
+				
+			}
+		}
 		creerComptePatient();
 
 	}
