@@ -74,24 +74,7 @@ public class app {
 
 
 	// SECRETAIRE
-	public static void connexionSecretaire() {
-		System.out.println("Connexion secretaire");
-		String login = saisieString("Saisir login secretaire : ");
-		String password = saisieString("Saisie mot de passe : ");
-		connected= daoC.seConnecter(login, password);
-		
-		if(connected instanceof Secretaire) {
-			menuSecretaire();
-		}else if(connected instanceof Medecin) {
-			System.out.println("Mauvaise page de connexion");
-		} else if(connected ==null) 
-		{
-			System.out.println("Identifiants invalides");
-		}
-		menuHopital();
-	}
-
-
+	
 	public static void menuSecretaire() {
 		
 		System.out.println("Menu secretaire");
@@ -106,7 +89,7 @@ public class app {
 		case 1 : creerRdv(); break;
 		case 2 : afficherFile(); break;
 		case 3 : partirPause(); break;
-		case 4 : connected = null; menuHopital(); break;
+		case 4 : connected = null; connectionHopital(); break;
 		}
 		
 		menuSecretaire();
@@ -117,13 +100,17 @@ public class app {
 		listePatients = daoP.findAll();
 		
 		int idPatient = saisieInt("ID du patient ?");
+		boolean patientConnu=false;
 		for (Patient p : listePatients) {
 			if (idPatient == p.getId()) {
-				
+				patientConnu=true;
+				fileAttente.add(p);
+				System.out.println("Monsieur "+ p.getNom() +" a ete ajoute a la file d'attente");
 			}
 		}
-		creerComptePatient();
-
+		if (!patientConnu) {
+			creerComptePatient();
+		}
 	}
 
 	public static void creerComptePatient() {
