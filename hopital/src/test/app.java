@@ -150,8 +150,8 @@ public class app {
 		
 		p.setNom(saisieString("Nom du nouveau patient :"));
 		p.setPrenom(saisieString("Prenom du nouveau patient :"));
-		
-		//daoP.insert(p);
+
+		p.setId(daoP.insert(p));
 		fileAttente.add(p);
 		System.out.println("Mr. / Mme. "+p.getNom()+" a ete ajoute(e) a la base et a la file d'attente");
 		

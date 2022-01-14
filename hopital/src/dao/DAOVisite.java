@@ -54,7 +54,7 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 	
 	
 	@Override
-	public void insert(Visite o) {
+	public Integer insert(Visite o) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hopital?characterEncoding=UTF-8","root","");
@@ -73,6 +73,7 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public static List<Visite> VisitefindByPatient(Integer patientId){
