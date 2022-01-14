@@ -20,6 +20,7 @@ public class Patient implements Serializable{
 
 	public Patient(String nom, String prenom) {
 		
+		this.id = null;
 		this.nom = nom;
 		this.prenom = prenom;
 	}
