@@ -119,17 +119,22 @@ public class app {
 	private static void creerRdv() {
 		List<Patient> listePatients = new ArrayList<Patient>();
 		listePatients = daoP.findAll();
-
-		Integer idPatient = saisieInt("ID du patient ?");
-		boolean patientConnu=false;
-		for (Patient p : listePatients) {
-			if (idPatient == p.getId()) {
-				patientConnu=true;
-				fileAttente.add(p);
-				System.out.println("Mr. / Mme. "+ p.getNom() +" a ete ajoute(e) a la file d'attente");
+		
+		
+				String patientExistant = saisieString("Ce patient est-il connu de l'hopital ? (O/N)");
+		switch (patientExistant) {
+		case "o":
+		case "O":
+			Integer idPatient = saisieInt("ID du patient ?");
+			for (Patient p : listePatients) {
+				if (idPatient == p.getId()) {
+					fileAttente.add(p);
+					System.out.println("Mr. / Mme. "+ p.getNom() +" a ete ajoute(e) a la file d'attente");
+					break;
+				}
 			}
-		}
-		if (!patientConnu) {
+		case "n":
+		case "N":
 			creerComptePatient();
 		}
 	}
@@ -146,7 +151,7 @@ public class app {
 	private static void afficherFile() {
 		System.out.println("Il y a " + fileAttente.size() + " patients dans la file d'attente");
 		for (Patient p : fileAttente) {
-			System.out.println("Le patient " + fileAttente.indexOf(p)+1 +" est Mr. / Mme " + p.getNom());
+			System.out.println("Le patient n°" + (fileAttente.indexOf(p)+1) +" est Mr. / Mme " + p.getNom());
 		}
 	}
 
