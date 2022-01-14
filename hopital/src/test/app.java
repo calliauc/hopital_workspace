@@ -1,6 +1,6 @@
 package test;
 
-import java.awt.Desktop;
+
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -192,19 +192,13 @@ public class app {
 
 		    
 		    oos.close();
+		    
+		}
 		   
 		      
-=======
-		try {
-		      final FileOutputStream fichier = new FileOutputStream("liste des patients.txt");
-		      oos = new ObjectOutputStream(fichier);
-		      /// oos.writeUTF("La secretaire est partie en pause à :");
-		      
-		      oos.writeObject(listePatients);
-		      oos.flush();
->>>>>>> main
-		} 
-		catch (final java.io.IOException e) {
+
+		catch (java.io.IOException e) 
+		{
 		      e.printStackTrace();
 		} 
 		finally {
@@ -219,20 +213,11 @@ public class app {
 			}
 		}
 		
-<<<<<<< HEAD
-		
-		
-		
-		//rentrerDePause() ;
-		
-		
-		
-=======
-		rentrerDePause() ;
->>>>>>> main
+
 	}
+
 	
-	public static void rentrerDePause () 
+	public static void rentrerDePause() 
 	{
 		int n = 0 ;
 		secretaireEnPause = false ; 
@@ -240,13 +225,13 @@ public class app {
 		
 		
 		ObjectInputStream ois = null;
-		;
+		
 		try {
 		      final FileInputStream fichier = new FileInputStream(f);
 		      ois = new ObjectInputStream(fichier);
 		      while (n <= nb_patients_file)
 		      {
-		    	  final Patient p = (Patient) ois.readObject();
+		    	  Patient p = (Patient) ois.readObject();
 		    	  System.out.println(p.toString());
 		    	  fileAttente.add(p);
 		    	  n++ ; 
