@@ -107,6 +107,33 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 		}
 		return visitesPatient;
 	}
+
+
+
+
+	@Override
+	public Visite findById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+	@Override
+	public void update(Visite o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }
