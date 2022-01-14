@@ -30,7 +30,7 @@ public class app {
 	static Compte connected = null;
 	static DAOCompte daoC = new DAOCompte();
 	static DAOPatient daoP = new DAOPatient();
-	static DAOVisite daoA = new DAOVisite();
+	static DAOVisite daoV = new DAOVisite();
 	
 	static Integer salleMedecin = null;
 
@@ -108,8 +108,7 @@ public class app {
 		System.out.println("4 - Afficher l'historique de visites d'un patient");
 		System.out.println("5 - Se deconnecter");
 
-		int choix = saisieInt("Choisir une opération");
-		switch (choix)
+		switch (saisieInt("Choisir une opération"))
 		{
 		case 1 : creerRdv(); break;
 		case 2 : afficherFile(); break;
@@ -126,7 +125,7 @@ public class app {
 		listePatients = daoP.findAll();
 		
 		
-				String patientExistant = saisieString("Ce patient est-il connu de l'hopital ? (O/N)");
+		String patientExistant = saisieString("Ce patient est-il connu de l'hopital ? (O/N)");
 		switch (patientExistant) {
 		case "o":
 		case "O":
@@ -137,13 +136,14 @@ public class app {
 					System.out.println("Mr. / Mme. "+ p.getNom() +" a ete ajoute(e) a la file d'attente");
 					break;
 				}
+
 			} break;
 		case "n":
 		case "N":
 			creerComptePatient(); break;
-		default : System.out.println("Saisir o ou n");
-		}
-	}
+		default : break;
+			}
+		
 
 	public static void creerComptePatient() {
 		Patient p = new Patient(null, null);
@@ -276,10 +276,6 @@ public class app {
 		  
 	}
 		
-		
-	
-	
-	
 
 	// FIN SECRETAIRE
 
@@ -296,6 +292,11 @@ public class app {
 
 	public static void menuMedecin() {
 
+		if (visites.size()>=10) {
+			System.out.println("Debut de la sauvegarde automatique des visites");
+			sauvegarderListeVisites();
+		}
+		
 		System.out.println("Menu medecin [" + connected.getLogin() + " en salle "+salleMedecin+"]");
 		System.out.println("1 - Faire entrer le patient suivant");
 		System.out.println("2 - Afficher le patient suivant");
@@ -385,7 +386,17 @@ public class app {
 
 
 	private static void sauvegarderListeVisites() {
-
+		if (!visites.isEmpty()) {
+			System.out.println("\n| Enregistrement des visites |\n");
+			for (Visite visite : visites) {
+				daoV.insert(visite);
+			}
+			visites.removeAll(visites);
+			System.out.println("\n| Visites enregistrees |\n");
+		} else {
+			System.out.println("| Aucune visite n'est a enregistrer |");
+		}
+		System.out.println("\n");
 	}
 
 
