@@ -125,7 +125,7 @@ public class app {
 		listePatients = daoP.findAll();
 		
 		
-		String patientExistant = saisieString("Ce patient est-il connu de l'hopital ? (O/N)");
+				String patientExistant = saisieString("Ce patient est-il connu de l'hopital ? (O/N)");
 		switch (patientExistant) {
 		case "o":
 		case "O":
@@ -136,13 +136,13 @@ public class app {
 					System.out.println("Mr. / Mme. "+ p.getNom() +" a ete ajoute(e) a la file d'attente");
 					break;
 				}
-
 			} break;
 		case "n":
 		case "N":
 			creerComptePatient(); break;
 		default : break;
-			}
+		}
+	}
 		
 
 	public static void creerComptePatient() {
