@@ -135,17 +135,26 @@ public class app {
 		listePatients = daoP.findAll();
 
 		int idPatient = saisieInt("ID du patient ?");
+		boolean patientConnu=false;
 		for (Patient p : listePatients) {
 			if (idPatient == p.getId()) {
-
+				patientConnu=true;
+				fileAttente.add(p);
+				System.out.println("Mr. / Mme. "+ p.getNom() +" a ete ajoute(e) a la file d'attente");
 			}
 		}
-		creerComptePatient();
-
+		if (!patientConnu) {
+			creerComptePatient();
+		}
 	}
 
 	public static void creerComptePatient() {
-
+		Patient p = new Patient(null, null, null);
+		p.setNom(saisieString("Nom du nouveau patient :"));
+		p.setPrenom(saisieString("Prenom du nouveau patient :"));
+		
+		fileAttente.add(p);
+		System.out.println("Mr. / Mme. "+p.getNom()+" a ete ajoute(e) a la base et a la file d'attente");
 	}
 
 	private static void afficherFile() {
