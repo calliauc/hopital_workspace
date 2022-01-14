@@ -1,5 +1,8 @@
 package test;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -28,7 +31,11 @@ public class app {
 	static List<Patient> fileAttente = new ArrayList<Patient>();
 
 	public static void main(String[] args) {
+		//menuHopital() ; 
+		//System.out.println("pause");
+		//partirPause() ;
 		// TODO Auto-generated method stub
+
 		connexionHopital();
 
 	}
@@ -56,7 +63,9 @@ public class app {
 
 
 
+
 	public static void connexionHopital() {
+
 		// Choix patient/medecin/secretaire
 		System.out.println(" v Connexion au systeme hospitalier v");
 		String login = saisieString("Saisir votre login");
@@ -80,6 +89,8 @@ public class app {
 	}
 
 
+
+
 	// SECRETAIRE
 	public static void connexionSecretaire() {
 		System.out.println("Connexion secretaire");
@@ -95,7 +106,7 @@ public class app {
 		{
 			System.out.println("Identifiants invalides");
 		}
-		menuHopital();
+		
 	}
 
 
@@ -142,7 +153,63 @@ public class app {
 	}
 
 	private static void partirPause() {
+		secretaireEnPause = true ; 
+		System.out.println("pause");
+		List<Patient> listePatients = new ArrayList<Patient>();
+		listePatients = daoP.findAll();
+		
+		ObjectOutputStream oos = null;
+		
+		try 
+		{
+		      final FileOutputStream fichier = new FileOutputStream("liste des patients.txt");
+		      oos = new ObjectOutputStream(fichier);
+		      /// oos.writeUTF("La secretaire est partie en pause à :");
+		      
+		      
+		      oos.writeObject(listePatients);
+		      
+		      
 
+		      oos.flush();
+		} 
+		catch (final java.io.IOException e) 
+		{
+		      e.printStackTrace();
+		} 
+		finally 
+		{
+		      
+			try {
+				if (oos != null) 
+				{
+			          oos.flush();
+			          oos.close();
+			    }
+			    } 
+			catch (final IOException ex) 
+			{
+			        ex.printStackTrace();
+			}
+		}
+		
+		rentrerDePause() ;
+		
+		
+		
+	}
+	
+	public static void rentrerDePause () 
+	{
+		secretaireEnPause = false ; 
+		
+	}
+	
+	
+
+	private static Object LocalDate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// FIN SECRETAIRE
