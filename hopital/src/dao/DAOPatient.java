@@ -93,10 +93,10 @@ public class DAOPatient implements Serializable, IDAO<Patient, Integer>{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(urlBdd, loginBdd, passwordBdd);
 		
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO patient VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO patient(nom, prenom) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
 			ps.setInt(1,p.getId());
-			ps.setString(2,p.getNom());
-			ps.setString(3,p.getPrenom());
+			ps.setString(1,p.getNom());
+			ps.setString(2,p.getPrenom());
 			
 			
 			ResultSet rs = ps.executeQuery();

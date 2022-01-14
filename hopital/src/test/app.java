@@ -137,20 +137,24 @@ public class app {
 					System.out.println("Mr. / Mme. "+ p.getNom() +" a ete ajoute(e) a la file d'attente");
 					break;
 				}
-			}
+			} break;
 		case "n":
 		case "N":
-			creerComptePatient();
+			creerComptePatient(); break;
+		default : System.out.println("Saisir o ou n");
 		}
 	}
 
 	public static void creerComptePatient() {
-		Patient p = new Patient(null, null, null);
+		Patient p = new Patient(null, null);
+		
 		p.setNom(saisieString("Nom du nouveau patient :"));
 		p.setPrenom(saisieString("Prenom du nouveau patient :"));
 		
+		//daoP.insert(p);
 		fileAttente.add(p);
 		System.out.println("Mr. / Mme. "+p.getNom()+" a ete ajoute(e) a la base et a la file d'attente");
+		
 	}
 
 	private static void afficherFile() {
