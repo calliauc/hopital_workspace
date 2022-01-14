@@ -87,31 +87,31 @@ public class DAOPatient implements Serializable, IDAO<Patient, Integer>{
 	}
 
 	@Override
-	public void insert(Patient p) {
+	public Integer insert(Patient p) {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(urlBdd, loginBdd, passwordBdd);
 		
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO patient(nom, prenom) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
-			ps.setInt(1,p.getId());
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO patient (nom, prenom) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1,p.getNom());
 			ps.setString(2,p.getPrenom());
 			
-			
-			ResultSet rs = ps.executeQuery();
-			
-			rs.close();
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			Integer id=null;
+			if(rs.next()) {
+				id = rs.getInt(1);
+			}
 			ps.close();
 			conn.close();
+			return id;
 		}
-		
-		
 		catch (ClassNotFoundException | SQLException e) {
-		e.printStackTrace();
+			e.printStackTrace();
+			return null;
 		}
-
-	}            
+	}
 
 	@Override
 	public void update(Patient p) {

@@ -116,7 +116,7 @@ public class DAOCompte implements IDAO<Compte, Integer> {
 	}
 
 	@Override
-	public void insert(Compte o) {
+	public Integer insert(Compte o) {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -143,7 +143,7 @@ public class DAOCompte implements IDAO<Compte, Integer> {
 		{
 			e.printStackTrace();
 		}
-		
+		return null;
 	}
 
 	@Override
