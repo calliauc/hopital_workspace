@@ -93,7 +93,7 @@ public class DAOPatient implements IDAO<Patient, Integer>{
 			Connection conn = DriverManager.getConnection(urlBdd, loginBdd, passwordBdd);
 		
 			PreparedStatement ps = conn.prepareStatement("INSERT INTO patient VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
-			ps.setInt(1,0);
+			ps.setInt(1,p.getId());
 			ps.setString(2,p.getNom());
 			ps.setString(3,p.getPrenom());
 			
