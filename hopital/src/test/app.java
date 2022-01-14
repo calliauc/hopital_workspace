@@ -106,7 +106,7 @@ public class app {
 		case 1 : creerRdv(); break;
 		case 2 : afficherFile(); break;
 		case 3 : partirPause(); break;
-		case 4 : connected = null; menuHopital(); break;
+		case 4 : connected = null; connectionHopital(); break;
 		}
 		
 		menuSecretaire();
@@ -146,12 +146,35 @@ public class app {
 
 	public static void menuMedecin() {
 		
-		System.out.println(" v Menu medecin. Que vouslez-vous faire ? v\n1 - Faire entrer le patient suivant\n2 - Afficher le patient suivant\n3 - Afficher la file d'attente\n4 - Sauvegarder vos visites passées");
+		System.out.println("Menu medecin");
+		System.out.println("1 - Faire entrer le patient suivant");
+		System.out.println("2 - Afficher le patient suivant");
+		System.out.println("3 - AZfficher la file d'attente");
+		System.out.println("4 - Sauvegarder vos dernières visites");
+		System.out.println("5 - Se deconnecter");
 		
-		patientSuivant();
-		afficherProchainPatient();
-		afficherFileAttente();
-		sauvegarderListeVisites();
+		switch(saisieInt("Choix ?")) {
+		case 1:
+			patientSuivant();
+			break;
+		case 2:
+			afficherProchainPatient();
+			break;
+		case 3:
+			afficherFileAttente();
+			break;
+		case 4:
+			sauvegarderListeVisites();
+			break;
+		case 5:
+			connected = null;
+			connectionHopital();
+			break;		
+		default :
+			System.out.println("Cette operation n'existe pas");
+			break;
+
+		}
 	}
 
 	private static void patientSuivant() {
