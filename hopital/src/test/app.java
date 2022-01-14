@@ -31,11 +31,9 @@ public class app {
 	static List<Patient> fileAttente = new ArrayList<Patient>();
 
 	public static void main(String[] args) {
-		//menuHopital() ; 
 		//System.out.println("pause");
 		//partirPause() ;
-		// TODO Auto-generated method stub
-		System.out.println("yoooo");
+
 		connexionHopital();
 
 	}
