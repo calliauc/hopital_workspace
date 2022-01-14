@@ -1,6 +1,10 @@
 package model;
 
-public class Patient {
+import java.io.Serializable;
+
+public class Patient implements Serializable{
+	
+	
 	
 	private Integer id ; 
 	private String nom ; 
@@ -10,6 +14,12 @@ public class Patient {
 	public Patient(Integer id, String nom, String prenom) {
 		
 		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+	}
+
+	public Patient(String nom, String prenom) {
+		
 		this.nom = nom;
 		this.prenom = prenom;
 	}

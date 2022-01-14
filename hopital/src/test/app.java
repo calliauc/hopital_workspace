@@ -1,7 +1,12 @@
 package test;
 
+import java.awt.Desktop;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,13 +36,13 @@ public class app {
 
 	static boolean secretaireEnPause;
 	static LinkedList<Patient> fileAttente = new LinkedList<Patient>();
+	static int nb_patients_file ;
 	static List<Visite> visites = new ArrayList<Visite>();
 
 	public static void main(String[] args) {
-		//System.out.println("pause");
-		//partirPause() ;
 
-		connexionHopital();
+		//connexionHopital();
+	
 
 	}
 
@@ -74,7 +79,7 @@ public class app {
 		connected = daoC.seConnecter(login, password);
 
 		if(connected instanceof Medecin) {
-			while (salleMedecin != 1 && salleMedecin != 2)
+			while (salleMedecin != (Integer)1 && salleMedecin != (Integer)2)
 				salleMedecin = saisieInt("Allez vous consulter dans la salle 1 ou 2 ?");
 			menuMedecin();
 		}
@@ -156,57 +161,137 @@ public class app {
 	}
 
 	private static void partirPause() {
-		secretaireEnPause = true ; 
-		System.out.println("pause");
-		List<Patient> listePatients = new ArrayList<Patient>();
-		listePatients = daoP.findAll();
+		
+		secretaireEnPause = true ;
+		
+		nb_patients_file = fileAttente.size() ; 
 		
 		ObjectOutputStream oos = null;
 		
-		try
+
+		
+		try 
 		{
+			File f=new File("liste des patients.txt");
+			final FileOutputStream fichier = new FileOutputStream(f);
+		    oos = new ObjectOutputStream(fichier);
+		    /// oos.writeUTF("La secretaire est partie en pause à :");
+		      
+		    for (Patient p : fileAttente)
+		    {
+		    	System.out.println(p.toString());
+		    	oos.writeObject(p);
+		    	
+		    	
+		    	  //daoP.delete(p.getId());
+		    }
+		    fileAttente = new LinkedList<Patient>() ;
+		    System.out.println(fileAttente);  
+		      
+		      
+
+		    
+		    oos.close();
+		   
+		      
+=======
+		try {
 		      final FileOutputStream fichier = new FileOutputStream("liste des patients.txt");
 		      oos = new ObjectOutputStream(fichier);
 		      /// oos.writeUTF("La secretaire est partie en pause à :");
 		      
 		      oos.writeObject(listePatients);
 		      oos.flush();
+>>>>>>> main
 		} 
-		catch (final java.io.IOException e)
-		{
+		catch (final java.io.IOException e) {
 		      e.printStackTrace();
 		} 
-		finally
-		{
-			try
-			{
-				if (oos != null)
-				{
+		finally {
+			try {
+				if (oos != null) {
 			          oos.flush();
 			          oos.close();
 			    }
 			}
-			catch (final IOException ex)
-			{
+			catch (final IOException ex) {
 			        ex.printStackTrace();
 			}
 		}
 		
+<<<<<<< HEAD
+		
+		
+		
+		//rentrerDePause() ;
+		
+		
+		
+=======
 		rentrerDePause() ;
+>>>>>>> main
 	}
 	
 	public static void rentrerDePause () 
 	{
+		int n = 0 ;
 		secretaireEnPause = false ; 
+		File f =new File("liste des patients.txt");
 		
+		
+		ObjectInputStream ois = null;
+		;
+		try {
+		      final FileInputStream fichier = new FileInputStream(f);
+		      ois = new ObjectInputStream(fichier);
+		      while (n <= nb_patients_file)
+		      {
+		    	  final Patient p = (Patient) ois.readObject();
+		    	  System.out.println(p.toString());
+		    	  fileAttente.add(p);
+		    	  n++ ; 
+		      }
+		      
+		      f.delete() ;
+		      
+		    } 
+		catch( EOFException e)
+		{
+			
+			f.delete() ;
+		}
+		catch (final java.io.IOException e) 
+		{
+		      e.printStackTrace();
+		} 
+		catch (final ClassNotFoundException e) 
+		{
+		      e.printStackTrace();
+		}
+		
+		finally 
+		{
+			try 
+			{
+				if (ois != null)
+				{
+		          ois.close();
+		        }
+		     } 
+			catch (final IOException ex) 
+			{
+		        ex.printStackTrace();
+		    }
+		  }
+		System.out.println("après pause");
+		System.out.println(fileAttente.toString());
+		  
 	}
+		
+		
 	
 	
-
-	private static Object LocalDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	// FIN SECRETAIRE
 
@@ -227,8 +312,9 @@ public class app {
 		System.out.println("1 - Faire entrer le patient suivant");
 		System.out.println("2 - Afficher le patient suivant");
 		System.out.println("3 - Afficher la file d'attente");
-		System.out.println("4 - Sauvegarder vos dernières visites");
-		System.out.println("5 - Se deconnecter");
+		System.out.println("4 - Afficher vos dernières visites non enregistrées ("+visites.size()+")");
+		System.out.println("5 - Sauvegarder vos dernières visites("+visites.size()+")");
+		System.out.println("6 - Se deconnecter");
 
 		switch(saisieInt("Choix ?")) {
 		case 1:
@@ -241,9 +327,12 @@ public class app {
 			afficherFileAttente();
 			break;
 		case 4:
-			sauvegarderListeVisites();
+			afficherListeVisites();
 			break;
 		case 5:
+			sauvegarderListeVisites();
+			break;
+		case 6:
 			connected = null;
 			salleMedecin = 0;
 			connexionHopital();
@@ -256,8 +345,17 @@ public class app {
 		menuMedecin();
 	}
 
+
 	private static void patientSuivant() {
-		visites.add(new Visite(null, fileAttente.pollFirst(), (Medecin)connected, 20, salleMedecin, LocalDate.now()));
+		System.out.println("|\tLe patient précédent est sorti\t|");
+		if (!fileAttente.isEmpty()) {
+			afficherProchainPatient();
+			System.out.println("|\tVisite en cours\t|\n\n");
+			visites.add(new Visite(null, fileAttente.pollFirst(), (Medecin)connected, 20, salleMedecin, LocalDate.now()));
+		} else {
+			System.out.println("| Aucun autre patient n'est prévu| ");
+		}
+		System.out.println("\n");
 	}
 
 	private static void afficherProchainPatient() {
@@ -280,6 +378,19 @@ public class app {
 
 		} else {
 			System.out.println("| Aucun patient n'est prévu |");
+		}
+		System.out.println("\n");
+	}
+
+	public static void afficherListeVisites() {
+		if (!visites.isEmpty()) {
+			System.out.println("\n| Liste visites non enregistrées |\n");
+			for (Visite visite : visites) {
+				System.out.println("\t" + visite);
+			}
+
+		} else {
+			System.out.println("| Aucune visite n'est à enregistrer |");
 		}
 		System.out.println("\n");
 	}
