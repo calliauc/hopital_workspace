@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 			{
 				Patient p = daoP.findById(rs.getInt("id_patient"));
 				Medecin m = (Medecin) daoC.findById(rs.getInt("id_medecin"));
-				v = new Visite(rs.getInt("numero"), p, m, rs.getInt("prix"), rs.getInt("salle"), rs.getDate("date_visite"));
+				v = new Visite(rs.getInt("numero"), p, m, rs.getInt("prix"), rs.getInt("salle"), LocalDate.parse(rs.getString("date_visite")));
 
 				visites.add(v);
 			}
@@ -73,7 +74,7 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 	
 	public static List<Visite> VisitefindByPatient(Integer patientId){
 		List<Visite> visitesPatient = new ArrayList<>();
-		DAOPatient daop = new DAOPatient();
+		DAOPatient daoP = new DAOPatient();
 		DAOCompte daoC = new DAOCompte();
 		Visite v=null;
 
@@ -91,7 +92,7 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 
 				Patient p = daoP.findById(rs.getInt("id_patient"));
 				Medecin m = (Medecin) daoC.findById(rs.getInt("id_medecin"));
-				v = new Visite(rs.getInt("numero"), p, m, rs.getInt("prix"), rs.getInt("salle"), rs.getDate("date_visite"));
+				v = new Visite(rs.getInt("numero"), p, m, rs.getInt("prix"), rs.getInt("salle"), LocalDate.parse(rs.getString("date_visite")));
 
 				visitesPatient.add(v);
 			}
