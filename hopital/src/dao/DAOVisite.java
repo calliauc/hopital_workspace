@@ -59,9 +59,12 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hopital?characterEncoding=UTF-8","root","");
 
-			PreparedStatement ps= conn.prepareStatement("INSERT INTO visite (id_patient,id_medecin) VALUES (?,?)");
+			PreparedStatement ps= conn.prepareStatement("INSERT INTO visite (id_patient,id_medecin,prix,salle,date_visite) VALUES (?,?,?,?,?)");
 			ps.setInt(1,o.getPatient().getId());
 			ps.setInt(2,o.getMedecin().getId());
+			ps.setInt(3,o.getPrix());
+			ps.setInt(4,o.getSalle());
+			ps.setString(5,o.getDateVisite().toString());
 			ps.executeUpdate();
 
 			ps.close();

@@ -30,7 +30,7 @@ public class app {
 	static Compte connected = null;
 	static DAOCompte daoC = new DAOCompte();
 	static DAOPatient daoP = new DAOPatient();
-	static DAOVisite daoA = new DAOVisite();
+	static DAOVisite daoV = new DAOVisite();
 	
 	static Integer salleMedecin = null;
 
@@ -293,6 +293,11 @@ public class app {
 
 	public static void menuMedecin() {
 
+		if (visites.size()>=10) {
+			System.out.println("Début de la sauvegarde automatique des visites");
+			sauvegarderListeVisites();
+		}
+		
 		System.out.println("Menu medecin [" + connected.getLogin() + " en salle "+salleMedecin+"]");
 		System.out.println("1 - Faire entrer le patient suivant");
 		System.out.println("2 - Afficher le patient suivant");
@@ -300,6 +305,7 @@ public class app {
 		System.out.println("4 - Afficher vos dernières visites non enregistrées ("+visites.size()+")");
 		System.out.println("5 - Sauvegarder vos dernières visites("+visites.size()+")");
 		System.out.println("6 - Se deconnecter");
+		
 
 		switch(saisieInt("Choix ?")) {
 		case 1:
@@ -382,7 +388,17 @@ public class app {
 
 
 	private static void sauvegarderListeVisites() {
-
+		if (!visites.isEmpty()) {
+			System.out.println("\n| Enregistrement des visites |\n");
+			for (Visite visite : visites) {
+				daoV.insert(visite);
+			}
+			visites.removeAll(visites);
+			System.out.println("\n| Visites enregistrées |\n");
+		} else {
+			System.out.println("| Aucune visite n'est à enregistrer |");
+		}
+		System.out.println("\n");
 	}
 
 
