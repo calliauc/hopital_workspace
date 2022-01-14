@@ -35,27 +35,74 @@ public class app {
 		// Choix patient/medecin/secretaire
 		connexionSecretaire();
 		connexionMedecin();
-		connexionPatient();
 
 	}
 
-	private static void connexionPatient() {
+
+	// SECRETAIRE
+	public static void connexionSecretaire() {
+		menuSecretaire();
+	}
+
+
+	public static void menuSecretaire() {
+		creerRdv();
+		afficherFile();
+		partirPause();
+
+	}
+
+	private static void creerRdv() {
 		creerComptePatient();
-	}
-
-	private static void creerComptePatient() {
 
 	}
 
-	private static void connexionMedecin() {
+	public static void creerComptePatient() {
 
 	}
 
-	private static void connexionSecretaire() {
+	private static void afficherFile() {
+
+	}
+
+	private static void partirPause() {
+
+	}
+
+	// FIN SECRETAIRE
+
+
+	//MEDECIN
+
+	public static void connexionMedecin() {
+		menuMedecin();
+	}
+
+	public static void menuMedecin() {
+		patientSuivant();
+		afficherProchainPatient();
+		afficherFileAttente();
+		sauvegarderListeVisites();
+	}
+
+	private static void patientSuivant() {
+
+	}
+
+	private static void afficherProchainPatient() {
+
+	}
+
+	private static void afficherFileAttente() {
 
 	}
 
 
+	private static void sauvegarderListeVisites() {
 
+	}
+
+
+	//FIN MEDECIN
 
 }
