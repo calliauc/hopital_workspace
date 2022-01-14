@@ -3,6 +3,7 @@ package test;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,10 +27,11 @@ public class app {
 	static DAOPatient daoP = new DAOPatient();
 	static DAOVisite daoA = new DAOVisite();
 	
-	static int salleMedecin = 0;
+	static Integer salleMedecin = null;
 
 	static boolean secretaireEnPause;
 	static LinkedList<Patient> fileAttente = new LinkedList<Patient>();
+	static List<Visite> visites = new ArrayList<Visite>();
 
 	public static void main(String[] args) {
 		//System.out.println("pause");
@@ -250,7 +252,7 @@ public class app {
 	}
 
 	private static void patientSuivant() {
-
+		visites.add(new Visite(null, fileAttente.pollFirst(), (Medecin)connected, 20, salleMedecin, LocalDate.now()));
 	}
 
 	private static void afficherProchainPatient() {
