@@ -33,7 +33,7 @@ public class app {
 
 	public static void menuHopital() {
 		// Choix patient/medecin/secretaire
-		switch (saisieString("Portail du système informatique hospitalier. Connexion :\nM- Medecin\nS- Secretaire\nQ- Quitter")) {
+		switch (saisieString("Portail du système informatique hospitalier. Connexion :\nM - Medecin\nS - Secretaire\nQ - Quitter")) {
 		case "M":
 		case "m":
 			connexionMedecin();
