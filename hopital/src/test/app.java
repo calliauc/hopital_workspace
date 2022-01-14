@@ -33,29 +33,93 @@ public class app {
 
 	public static void menuHopital() {
 		// Choix patient/medecin/secretaire
-		connexionSecretaire();
-		connexionMedecin();
-		connexionPatient();
+		switch (saisieString("Portail du système informatique hospitalier. Connexion :\nM- Medecin\nS- Secretaire\nQ- Quitter")) {
+		case "M":
+		case "m":
+			connexionMedecin();
+			break;
+		case "S":
+		case "s":
+			connexionSecretaire();
+			break;
+		case "Q":
+		case "q":
+			System.exit(0);
+			break;
+		default:
+			System.out.println("Saisie incorrecte");
+			break;
+		}
+		
+		menuHopital();
 
 	}
 
-	private static void connexionPatient() {
+
+	// SECRETAIRE
+	public static void connexionSecretaire() {
+		menuSecretaire();
+	}
+
+
+	public static void menuSecretaire() {
+		creerRdv();
+		afficherFile();
+		partirPause();
+
+	}
+
+	private static void creerRdv() {
 		creerComptePatient();
-	}
-
-	private static void creerComptePatient() {
 
 	}
 
-	private static void connexionMedecin() {
+	public static void creerComptePatient() {
 
 	}
 
-	private static void connexionSecretaire() {
+	private static void afficherFile() {
+
+	}
+
+	private static void partirPause() {
+
+	}
+
+	// FIN SECRETAIRE
+
+
+	//MEDECIN
+
+	public static void connexionMedecin() {
+		menuMedecin();
+	}
+
+	public static void menuMedecin() {
+		patientSuivant();
+		afficherProchainPatient();
+		afficherFileAttente();
+		sauvegarderListeVisites();
+	}
+
+	private static void patientSuivant() {
+
+	}
+
+	private static void afficherProchainPatient() {
+
+	}
+
+	private static void afficherFileAttente() {
 
 	}
 
 
+	private static void sauvegarderListeVisites() {
 
+	}
+
+
+	//FIN MEDECIN
 
 }
