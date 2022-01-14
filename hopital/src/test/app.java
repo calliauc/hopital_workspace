@@ -91,23 +91,6 @@ public class app {
 
 
 	// SECRETAIRE
-	public static void connexionSecretaire() {
-		System.out.println("Connexion secretaire");
-		String login = saisieString("Saisir login secretaire : ");
-		String password = saisieString("Saisie mot de passe : ");
-		connected= daoC.seConnecter(login, password);
-
-		if(connected instanceof Secretaire) {
-			menuSecretaire();
-		}else if(connected instanceof Medecin) {
-			System.out.println("Mauvaise page de connexion");
-		} else if(connected ==null) 
-		{
-			System.out.println("Identifiants invalides");
-		}
-		
-	}
-
 
 	public static void menuSecretaire() {
 
