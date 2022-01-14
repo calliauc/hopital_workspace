@@ -8,13 +8,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Medecin;
+import model.Patient;
+import model.Visite;
+
 
 public class DAOVisite implements IDAO<Visite,Integer> {
 
 	@Override
 	public List<Visite> findAll() {
 		List<Visite> visites = new ArrayList<>();
-		DAOpatient daop = new DAOpatient();
+		DAOPatient daoP = new DAOPatient();
 		DAOCompte daoC = new DAOCompte();
 		
 		try {
@@ -28,7 +32,7 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 
 			while(rs.next()) 
 			{
-				Patient p = (Patient) daoC.findById(rs.getInt("id_patient"));
+				Patient p = daoP.findById(rs.getInt("id_patient"));
 				Medecin m = (Medecin) daoC.findById(rs.getInt("id_medecin"));
 				v = new Visite(rs.getInt("numero"), p, m, rs.getInt("prix"), rs.getInt("salle"), rs.getDate("date_visite"));
 
@@ -69,7 +73,7 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 	
 	public static List<Visite> VisitefindByPatient(Integer patientId){
 		List<Visite> visitesPatient = new ArrayList<>();
-		DAOpatient daop = new DAOpatient();
+		DAOPatient daop = new DAOPatient();
 		DAOCompte daoC = new DAOCompte();
 		Visite v=null;
 
@@ -85,7 +89,7 @@ public class DAOVisite implements IDAO<Visite,Integer> {
 			while(rs.next()) 
 			{
 
-				Patient p = (Patient) daoC.findById(rs.getInt("id_patient"));
+				Patient p = daoP.findById(rs.getInt("id_patient"));
 				Medecin m = (Medecin) daoC.findById(rs.getInt("id_medecin"));
 				v = new Visite(rs.getInt("numero"), p, m, rs.getInt("prix"), rs.getInt("salle"), rs.getDate("date_visite"));
 
