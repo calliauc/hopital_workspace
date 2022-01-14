@@ -2,6 +2,10 @@ package test;
 
 import java.util.Scanner;
 
+import model.Admin;
+import model.Client;
+import model.Vendeur;
+
 public class app {
 
 	public static void main(String[] args) {
@@ -58,7 +62,20 @@ public class app {
 
 	// SECRETAIRE
 	public static void connexionSecretaire() {
+		System.out.println("Connexion secretaire");
+		String login = saisieString("Saisir login secretaire : ");
+		String password = saisieString("Saisie mot de passe : ");
 		menuSecretaire();
+		
+//		if(connected instanceof Secretaire) {
+//			menuSecretaire();
+//		}else if(connected instanceof Medecin) {
+//			System.out.println("Mauvaise page de connexion");
+//		} else if(connected ==null) 
+//		{
+//			System.out.println("Identifiants invalides");
+//		}
+//		menuHopital();
 	}
 
 
@@ -75,7 +92,7 @@ public class app {
 	}
 
 	public static void creerComptePatient() {
-
+		
 	}
 
 	private static void afficherFile() {
