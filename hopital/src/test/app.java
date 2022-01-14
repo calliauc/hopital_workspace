@@ -65,25 +65,38 @@ public class app {
 		System.out.println("Connexion secretaire");
 		String login = saisieString("Saisir login secretaire : ");
 		String password = saisieString("Saisie mot de passe : ");
-		menuSecretaire();
+		connected= daoC.seConnecter(login, password);
 		
-//		if(connected instanceof Secretaire) {
-//			menuSecretaire();
-//		}else if(connected instanceof Medecin) {
-//			System.out.println("Mauvaise page de connexion");
-//		} else if(connected ==null) 
-//		{
-//			System.out.println("Identifiants invalides");
-//		}
-//		menuHopital();
+		if(connected instanceof Secretaire) {
+			menuSecretaire();
+		}else if(connected instanceof Medecin) {
+			System.out.println("Mauvaise page de connexion");
+		} else if(connected ==null) 
+		{
+			System.out.println("Identifiants invalides");
+		}
+		menuHopital();
 	}
 
 
 	public static void menuSecretaire() {
-		creerRdv();
-		afficherFile();
-		partirPause();
-
+		
+		System.out.println("Menu secretaire");
+		System.out.println("1 - Creer un rendez-vous");
+		System.out.println("2 - Afficher file d'attente");
+		System.out.println("3 - Partir en pause");
+		System.out.println("4 - Se deconnecter");
+		
+		int choix = saisieInt("Choisir une opération");
+		switch (choix)
+		{
+		case 1 : creerRdv(); break;
+		case 2 : afficherFile(); break;
+		case 3 : partirPause(); break;
+		case 4 : connected = null; menuHopital(); break;
+		}
+		
+		menuSecretaire();
 	}
 
 	private static void creerRdv() {
