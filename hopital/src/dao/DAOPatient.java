@@ -12,7 +12,7 @@ import java.util.List;
 
 import model.Patient;
 
-public class DAOPatient implements IDAO<Patient, Integer>, Serializable{
+public class DAOPatient implements  IDAO<Patient, Integer>{
 
 	@Override
 	public Patient findById(Integer id) {

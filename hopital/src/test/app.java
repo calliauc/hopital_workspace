@@ -1,7 +1,12 @@
 package test;
 
+import java.awt.Desktop;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +35,13 @@ public class app {
 
 	static boolean secretaireEnPause;
 	static List<Patient> fileAttente = new ArrayList<Patient>();
-
+	static int nb_patients ;
+	
 	public static void main(String[] args) {
 
 		//connexionHopital();
 		partirPause();
+		rentrerDePause();
 
 	}
 
@@ -163,25 +170,38 @@ public class app {
 	}
 
 	private static void partirPause() {
-		secretaireEnPause = true ; 
-		System.out.println("pause");
-		List<Patient> listePatients = new ArrayList<Patient>();
-		listePatients = daoP.findAll();
+		
+		secretaireEnPause = true ;
+		fileAttente = daoP.findAll();
+		nb_patients = fileAttente.size() ; 
 		
 		ObjectOutputStream oos = null;
 		
+		
 		try 
 		{
-		      final FileOutputStream fichier = new FileOutputStream("liste des patients.txt");
-		      oos = new ObjectOutputStream(fichier);
-		      /// oos.writeUTF("La secretaire est partie en pause à :");
+			File f=new File("liste des patients.txt");
+			final FileOutputStream fichier = new FileOutputStream(f);
+		    oos = new ObjectOutputStream(fichier);
+		    /// oos.writeUTF("La secretaire est partie en pause à :");
 		      
-		      
-		      oos.writeObject(listePatients);
+		    for (Patient p : fileAttente)
+		    {
+		    	System.out.println(p.toString());
+		    	oos.writeObject(p);
+		    	
+		    	
+		    	  //daoP.delete(p.getId());
+		    }
+		    fileAttente = new ArrayList<Patient>() ;
+		    System.out.println(fileAttente);  
 		      
 		      
 
-		      oos.flush();
+		    
+		    oos.close();
+		   
+		      
 		} 
 		catch (final java.io.IOException e) 
 		{
@@ -203,7 +223,10 @@ public class app {
 			}
 		}
 		
-		rentrerDePause() ;
+		
+		
+		
+		//rentrerDePause() ;
 		
 		
 		
@@ -211,9 +234,62 @@ public class app {
 	
 	public static void rentrerDePause () 
 	{
+		int n = 0 ;
 		secretaireEnPause = false ; 
+		File f =new File("liste des patients.txt");
 		
+		
+		ObjectInputStream ois = null;
+		;
+		try {
+		      final FileInputStream fichier = new FileInputStream(f);
+		      ois = new ObjectInputStream(fichier);
+		      while (n <= nb_patients)
+		      {
+		    	  final Patient p = (Patient) ois.readObject();
+		    	  System.out.println(p.toString());
+		    	  fileAttente.add(p);
+		    	  n++ ; 
+		      }
+		      
+		      f.delete() ;
+		      
+		    } 
+		catch( EOFException e)
+		{
+			
+			f.delete() ;
+		}
+		catch (final java.io.IOException e) 
+		{
+		      e.printStackTrace();
+		} 
+		catch (final ClassNotFoundException e) 
+		{
+		      e.printStackTrace();
+		}
+		
+		finally 
+		{
+			try 
+			{
+				if (ois != null)
+				{
+		          ois.close();
+		        }
+		     } 
+			catch (final IOException ex) 
+			{
+		        ex.printStackTrace();
+		    }
+		  }
+		System.out.println("après pause");
+		System.out.println(fileAttente.toString());
+		  
 	}
+		
+		
+	
 	
 	
 
