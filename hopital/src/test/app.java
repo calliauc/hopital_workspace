@@ -62,7 +62,7 @@ public class app {
 		connected = daoC.seConnecter(login, password);
 
 		if(connected instanceof Medecin) {menuMedecin();}
-		else if(connected instanceof Vendeur) {menuSecretaire();}
+		else if(connected instanceof Secretaire) {menuSecretaire();}
 		else if(connected ==null) 
 		{
 			System.out.println("Identifiants invalides !");
