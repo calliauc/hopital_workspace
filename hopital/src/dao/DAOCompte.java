@@ -9,6 +9,41 @@ import model.Medecin;
 import model.Secretaire;
 
 public class DAOCompte implements IDAO<Compte, Integer> {
+	
+	public Compte seConnecter(String login, String password) {
+		Compte c = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(urlBdd,loginBdd,passwordBdd);
+
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM compte WHERE login=? AND password=? ");
+			ps.setString(1, login);
+			ps.setString(2, password);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next())
+			{
+				if (rs.getString("type_compte").equals("Medecin")) 
+				{
+					c = new Medecin (rs.getInt("id"),rs.getString("login"),rs.getString("password"));
+				}
+				else if (rs.getString("type_compte").equals("Secretaire"))
+				{
+					c = new Secretaire (rs.getInt("id"),rs.getString("login"),rs.getString("password"));
+				}
+			}
+			rs.close();
+			ps.close();
+			conn.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Problème de connection au Compte");
+		}
+		
+		
+		return c;
+	}
 
 	@Override
 	public Compte findById(Integer id) {
