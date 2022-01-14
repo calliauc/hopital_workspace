@@ -33,7 +33,7 @@ public class app {
 
 	public static void menuHopital() {
 		// Choix patient/medecin/secretaire
-		switch (saisieString("Connexion en tant que medecin ou secretaire ? M/S : ")) {
+		switch (saisieString("Portail du système informatique hospitalier. Connexion :\nM- Medecin\nS- Secretaire\nQ- Quitter")) {
 		case "M":
 		case "m":
 			connexionMedecin();
@@ -42,7 +42,12 @@ public class app {
 		case "s":
 			connexionSecretaire();
 			break;
+		case "Q":
+		case "q":
+			System.exit(0);
+			break;
 		default:
+			System.out.println("Saisie incorrecte");
 			break;
 		}
 		
